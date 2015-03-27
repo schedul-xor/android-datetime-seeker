@@ -225,7 +225,7 @@ public class CircularSeekBar extends View {
                         touchRadius < radius + innerAdjustmentFactor &&
                                 touchRadius > radius - outerAdjustmentFactor;
                 isRequiredToUpdate = isPressed;
-                if(barHoldListener != null){
+                if(isPressed && barHoldListener != null){
                     barHoldListener.onBarHold();
                 }
                 break;
