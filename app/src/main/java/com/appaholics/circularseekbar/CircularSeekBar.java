@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -29,7 +28,9 @@ public class CircularSeekBar extends View {
     private Context mContext;
 
     /** The listener to listen for changes */
-    private OnSeekChangeListener mListener;
+    private SeekChangeListener seekChangeListener;
+
+    private BarHoldListener barHoldListener;
 
     /** The color of the progress ring */
     private Paint circleColor;
@@ -213,6 +214,9 @@ public class CircularSeekBar extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 isPressed = false;
+                if(barHoldListener != null){
+                    barHoldListener.onBarReleased();
+                }
                 break;
 
             case MotionEvent.ACTION_DOWN:
@@ -221,6 +225,9 @@ public class CircularSeekBar extends View {
                         touchRadius < radius + innerAdjustmentFactor &&
                                 touchRadius > radius - outerAdjustmentFactor;
                 isRequiredToUpdate = isPressed;
+                if(barHoldListener != null){
+                    barHoldListener.onBarHold();
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 isRequiredToUpdate = isPressed;
@@ -242,7 +249,7 @@ public class CircularSeekBar extends View {
         }
 
         int newProgress = (int) Math.ceil(degreeAngle / 360.0 * maxProgress);
-        this.setProgress(newProgress);
+        this.setProgress(newProgress,true);
 
         invalidate();
         return true;
@@ -254,17 +261,12 @@ public class CircularSeekBar extends View {
      * @param listener
      *            the new seek bar change listener
      */
-    public void setSeekBarChangeListener(OnSeekChangeListener listener) {
-        mListener = listener;
+    public void setSeekBarChangeListener(SeekChangeListener listener) {
+        seekChangeListener = listener;
     }
 
-    /**
-     * Gets the seek bar change listener.
-     *
-     * @return the seek bar change listener
-     */
-    public OnSeekChangeListener getSeekBarChangeListener() {
-        return mListener;
+    public void setBarHoldListener(BarHoldListener listener) {
+        barHoldListener = listener;
     }
 
     /**
@@ -304,7 +306,7 @@ public class CircularSeekBar extends View {
      * @param progress
      *            the new progress
      */
-    public void setProgress(int progress) {
+    public void setProgress(int progress,boolean enableOverflows) {
         int previousProgress = this.progress;
 
         // Update progress
@@ -316,17 +318,23 @@ public class CircularSeekBar extends View {
             this.progress = this.maxProgress - 1;
         }
         int progressDelta = this.progress - previousProgress;
+        if (progressDelta == 0) {
+            return;
+        }
         int overflowThreshold = maxProgress / 4 * 3;
         OverflowType overflowType = OverflowType.NONE;
-        Log.d(TAG, progressDelta + "/" + overflowThreshold);
-        if (progressDelta < 0 && progressDelta < -overflowThreshold) {
-            overflowType = OverflowType.OVERFLOWED;
-        } else if (progressDelta > 0 && progressDelta > overflowThreshold) {
-            overflowType = OverflowType.UNDERFLOWED;
+        if (enableOverflows) {
+            if (progressDelta < 0 && progressDelta < -overflowThreshold) {
+                overflowType = OverflowType.OVERFLOWED;
+            } else if (progressDelta > 0 && progressDelta > overflowThreshold) {
+                overflowType = OverflowType.UNDERFLOWED;
+            }
         }
-        if (mListener != null) {
-            mListener.onProgressChange(this, this.progress, overflowType);
+
+        if (seekChangeListener != null) {
+            seekChangeListener.onProgressChange(this, this.progress, overflowType);
         }
+        invalidate(); // Repaint UI
     }
 
     /**
@@ -356,11 +364,16 @@ public class CircularSeekBar extends View {
      * the onSeekChange event occurs, that object's appropriate
      * method is invoked.
      */
-    public interface OnSeekChangeListener {
+    public interface SeekChangeListener {
         public void onProgressChange(CircularSeekBar view, int newProgress, OverflowType overflowType);
     }
 
-    public enum OverflowType{
-        NONE,OVERFLOWED,UNDERFLOWED
+    public interface BarHoldListener {
+        public void onBarHold();
+        public void onBarReleased();
+    }
+
+    public enum OverflowType {
+        NONE, OVERFLOWED, UNDERFLOWED
     }
 }
