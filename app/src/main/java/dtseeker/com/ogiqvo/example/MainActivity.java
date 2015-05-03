@@ -16,7 +16,7 @@ import org.joda.time.DateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import dtseeker.com.ogiqvo.Clock;
+import net.schedul.clock.lib.Clock;
 
 
 public class MainActivity extends ActionBarActivity implements Clock.ClockUpdateReceivable,CircularSeekBar.BarHoldListener {
@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
     Timer tickTimer;
     TextView timeTextView;
     Handler handler;
-    CircularSeekBar secondsSeekBar,minutesSeekBar,hoursSeekBar;
+    CircularSeekBar secondsSeekBar, minutesSeekBar, hoursSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +38,11 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         clock = new Clock();
         clock.setTickEventDelegate(this);
 
-       secondsSeekBar = (CircularSeekBar) findViewById(R.id.secondsCircularSeekBar);
-    minutesSeekBar = (CircularSeekBar) findViewById(R.id.minutesCircularSeekBar);
-      hoursSeekBar = (CircularSeekBar) findViewById(R.id.hoursCircularSeekBar);
+        secondsSeekBar = (CircularSeekBar) findViewById(R.id.secondsCircularSeekBar);
+        minutesSeekBar = (CircularSeekBar) findViewById(R.id.minutesCircularSeekBar);
+        hoursSeekBar = (CircularSeekBar) findViewById(R.id.hoursCircularSeekBar);
         final RadioGroup ampRadioGroup = (RadioGroup) findViewById(R.id.ampRadioGroup);
-        timeTextView = (TextView)findViewById(R.id.timeTextView);
+        timeTextView = (TextView) findViewById(R.id.timeTextView);
 
         secondsSeekBar.setBarHoldListener(this);
         secondsSeekBar.setMaxProgress(60);
@@ -117,11 +117,11 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         });
     }
 
-    private void setSeekBarTimeClockText(){
+    private void setSeekBarTimeClockText() {
         int hours = hoursSeekBar.getProgress();
         int minutes = minutesSeekBar.getProgress();
         int seconds = secondsSeekBar.getProgress();
-        updateClockText(hours,minutes,seconds);
+        updateClockText(hours, minutes, seconds);
     }
 
     @Override
@@ -139,13 +139,13 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         int prevHours = dt.getHourOfDay();
         int prevMinutes = dt.getMinuteOfHour();
         int prevSeconds = dt.getSecondOfMinute();
-        int deltaHours = hours-prevHours;
-        int deltaMinutes = minutes-prevMinutes;
-        int deltaSeconds = seconds-prevSeconds;
-        deltaSeconds += deltaMinutes*60+deltaHours*3600;
-        prevUtcMilliseconds += deltaSeconds*1000;
+        int deltaHours = hours - prevHours;
+        int deltaMinutes = minutes - prevMinutes;
+        int deltaSeconds = seconds - prevSeconds;
+        deltaSeconds += deltaMinutes * 60 + deltaHours * 3600;
+        prevUtcMilliseconds += deltaSeconds * 1000;
 
-        Log.d(TAG,"delta seconds "+deltaSeconds);
+        Log.d(TAG, "delta seconds " + deltaSeconds);
 
         clock.setPrevUtcMilliseconds(prevUtcMilliseconds);
         clock.setUtcMilliseconds(prevUtcMilliseconds);
@@ -168,11 +168,11 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         });
     }
 
-    private void updateClockText(int hours,int minutes,int seconds){
-        timeTextView.setText(String.format("%d:%02d:%02d",hours,minutes,seconds));
+    private void updateClockText(int hours, int minutes, int seconds) {
+        timeTextView.setText(String.format("%d:%02d:%02d", hours, minutes, seconds));
     }
 
-    private void createTickTimer(){
+    private void createTickTimer() {
         tickTimer = new Timer();
         tickTimer.schedule(new TimerTask() {
             @Override
@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         }, 0, 16);
     }
 
-    private void destroyTickTimer(){
+    private void destroyTickTimer() {
         if (tickTimer != null) {
             tickTimer.cancel();
             tickTimer = null;
