@@ -1,8 +1,8 @@
 package dtseeker.com.ogiqvo.example;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import com.appaholics.circularseekbar.CircularSeekBar;
 
+import net.schedul.clock.lib.Clock;
+
 import org.joda.time.DateTime;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import net.schedul.clock.lib.Clock;
 
 
 public class MainActivity extends ActionBarActivity implements Clock.ClockUpdateReceivable,CircularSeekBar.BarHoldListener {
