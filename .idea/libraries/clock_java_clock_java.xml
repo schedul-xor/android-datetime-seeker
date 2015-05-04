@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="clock-java.clock-java">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/vendor/clock-java/build/libs/clock-java.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

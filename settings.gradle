@@ -1,1 +1,1 @@
-include ':app', ':vendor:clock-java'
+include ':app', ':vendor:clock-java', ':ui'

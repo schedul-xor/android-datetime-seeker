@@ -3,7 +3,7 @@
  * @version 1
  * @date 26 January, 2013
  */
-package com.appaholics.circularseekbar;
+package net.schedul.clock.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,8 +15,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import dtseeker.com.ogiqvo.example.R;
 
 /**
  * The Class CircularSeekBar.

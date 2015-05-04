@@ -1,4 +1,4 @@
-package dtseeker.com.ogiqvo.example;
+package test.net.schedul.clock.example;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

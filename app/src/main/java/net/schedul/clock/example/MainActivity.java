@@ -1,16 +1,14 @@
-package dtseeker.com.ogiqvo.example;
+package net.schedul.clock.example;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.appaholics.circularseekbar.CircularSeekBar;
-
+import net.schedul.clock.ui.CircularSeekBar;
 import net.schedul.clock.lib.Clock;
 
 import org.joda.time.DateTime;
@@ -64,7 +62,6 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         minutesSeekBar.setSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
             @Override
             public void onProgressChange(CircularSeekBar view, int newProgress, CircularSeekBar.OverflowType overflowType) {
-                Log.d(TAG, "minutes " + newProgress + "/" + overflowType);
                 switch (overflowType) {
                     case UNDERFLOWED:
                         hoursSeekBar.setProgress(hoursSeekBar.getProgress() - 1, true);
@@ -144,8 +141,6 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         int deltaSeconds = seconds - prevSeconds;
         deltaSeconds += deltaMinutes * 60 + deltaHours * 3600;
         prevUtcMilliseconds += deltaSeconds * 1000;
-
-        Log.d(TAG, "delta seconds " + deltaSeconds);
 
         clock.setPrevUtcMilliseconds(prevUtcMilliseconds);
         clock.setUtcMilliseconds(prevUtcMilliseconds);
