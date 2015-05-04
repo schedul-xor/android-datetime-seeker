@@ -16,6 +16,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 /**
  * The Class CircularSeekBar.
  */
@@ -26,9 +29,9 @@ public class CircularSeekBar extends View {
     private Context mContext;
 
     /** The listener to listen for changes */
-    private SeekChangeListener seekChangeListener;
+    private Collection<SeekChangeListener> seekChangeListeners;
 
-    private BarHoldListener barHoldListener;
+    private Collection<BarHoldListener> barHoldListeners;
 
     /** The color of the progress ring */
     private Paint circleColor;
@@ -99,6 +102,9 @@ public class CircularSeekBar extends View {
         super(context, attrs);
         mContext = context;
 
+        seekChangeListeners = new HashSet<>();
+        barHoldListeners = new HashSet<>();
+
         init();
     }
 
@@ -111,6 +117,8 @@ public class CircularSeekBar extends View {
     public CircularSeekBar(Context context) {
         super(context);
         mContext = context;
+
+
 
         init();
     }
@@ -148,7 +156,7 @@ public class CircularSeekBar extends View {
         int width = getWidth(); // Get View Width
         int height = getHeight();// Get View Height
         int maxMarkWidth = Math.max(progressMark.getWidth(), progressMarkPressed.getWidth());
-        int maxMarkHeight = Math.max(progressMark.getHeight(),progressMarkPressed.getHeight());
+        int maxMarkHeight = Math.max(progressMark.getHeight(), progressMarkPressed.getHeight());
         int minWidth = width-maxMarkWidth;
         int minHeight = height-maxMarkHeight;
 
@@ -212,8 +220,10 @@ public class CircularSeekBar extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 isPressed = false;
-                if(barHoldListener != null){
-                    barHoldListener.onBarReleased();
+                if(barHoldListeners != null){
+                    for(BarHoldListener l : barHoldListeners) {
+                        l.onBarReleased();
+                    }
                 }
                 break;
 
@@ -223,8 +233,10 @@ public class CircularSeekBar extends View {
                         touchRadius < radius + innerAdjustmentFactor &&
                                 touchRadius > radius - outerAdjustmentFactor;
                 isRequiredToUpdate = isPressed;
-                if(isPressed && barHoldListener != null){
-                    barHoldListener.onBarHold();
+                if(isPressed && barHoldListeners != null){
+                    for(BarHoldListener l : barHoldListeners) {
+                        l.onBarHold();
+                    }
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -259,12 +271,12 @@ public class CircularSeekBar extends View {
      * @param listener
      *            the new seek bar change listener
      */
-    public void setSeekBarChangeListener(SeekChangeListener listener) {
-        seekChangeListener = listener;
+    public void addSeekBarChangeListener(SeekChangeListener listener) {
+        seekChangeListeners.add(listener);
     }
 
-    public void setBarHoldListener(BarHoldListener listener) {
-        barHoldListener = listener;
+    public void addBarHoldListeners(BarHoldListener listener) {
+        barHoldListeners.add(listener);
     }
 
     /**
@@ -329,8 +341,10 @@ public class CircularSeekBar extends View {
             }
         }
 
-        if (seekChangeListener != null) {
-            seekChangeListener.onProgressChange(this, this.progress, overflowType);
+        if (seekChangeListeners != null) {
+            for(SeekChangeListener l : seekChangeListeners) {
+                l.onProgressChange(this, this.progress, overflowType);
+            }
         }
         invalidate(); // Repaint UI
     }

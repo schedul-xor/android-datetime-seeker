@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import net.schedul.clock.ui.CircularSeekBar;
 import net.schedul.clock.lib.Clock;
+import net.schedul.clock.ui.CircularSeekBar;
 
 import org.joda.time.DateTime;
 
@@ -42,24 +42,24 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         final RadioGroup ampRadioGroup = (RadioGroup) findViewById(R.id.ampRadioGroup);
         timeTextView = (TextView) findViewById(R.id.timeTextView);
 
-        secondsSeekBar.setBarHoldListener(this);
+        secondsSeekBar.addBarHoldListeners(this);
         secondsSeekBar.setMaxProgress(60);
         secondsSeekBar.setInnerAdjustmentFactor(50);
-        minutesSeekBar.setBarHoldListener(this);
+        minutesSeekBar.addBarHoldListeners(this);
         minutesSeekBar.setMaxProgress(60);
         minutesSeekBar.setInnerAdjustmentFactor(50);
         minutesSeekBar.setOuterAdjustmentFactor(50);
-        hoursSeekBar.setBarHoldListener(this);
+        hoursSeekBar.addBarHoldListeners(this);
         hoursSeekBar.setMaxProgress(24);
         hoursSeekBar.setOuterAdjustmentFactor(50);
 
-        hoursSeekBar.setSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
+        hoursSeekBar.addSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
             @Override
             public void onProgressChange(CircularSeekBar view, int newProgress, CircularSeekBar.OverflowType overflowType) {
                 setSeekBarTimeClockText();
             }
         });
-        minutesSeekBar.setSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
+        minutesSeekBar.addSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
             @Override
             public void onProgressChange(CircularSeekBar view, int newProgress, CircularSeekBar.OverflowType overflowType) {
                 switch (overflowType) {
@@ -74,7 +74,7 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
             }
         });
 
-        secondsSeekBar.setSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
+        secondsSeekBar.addSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
             @Override
             public void onProgressChange(CircularSeekBar view, int newProgress, CircularSeekBar.OverflowType overflowType) {
                 switch (overflowType) {
