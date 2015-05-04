@@ -42,14 +42,14 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         final RadioGroup ampRadioGroup = (RadioGroup) findViewById(R.id.ampRadioGroup);
         timeTextView = (TextView) findViewById(R.id.timeTextView);
 
-        secondsSeekBar.addBarHoldListeners(this);
+        secondsSeekBar.addBarHoldListener(this);
         secondsSeekBar.setMaxProgress(60);
         secondsSeekBar.setInnerAdjustmentFactor(50);
-        minutesSeekBar.addBarHoldListeners(this);
+        minutesSeekBar.addBarHoldListener(this);
         minutesSeekBar.setMaxProgress(60);
         minutesSeekBar.setInnerAdjustmentFactor(50);
         minutesSeekBar.setOuterAdjustmentFactor(50);
-        hoursSeekBar.addBarHoldListeners(this);
+        hoursSeekBar.addBarHoldListener(this);
         hoursSeekBar.setMaxProgress(24);
         hoursSeekBar.setOuterAdjustmentFactor(50);
 

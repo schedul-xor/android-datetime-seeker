@@ -275,7 +275,7 @@ public class CircularSeekBar extends View {
         seekChangeListeners.add(listener);
     }
 
-    public void addBarHoldListeners(BarHoldListener listener) {
+    public void addBarHoldListener(BarHoldListener listener) {
         barHoldListeners.add(listener);
     }
 
