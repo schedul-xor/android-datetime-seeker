@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         handler = new Handler();
 
         clock = new Clock();
-        clock.setTickEventDelegate(this);
+        clock.addTickEventDelegate(this);
 
         secondsSeekBar = (CircularSeekBar) findViewById(R.id.secondsCircularSeekBar);
         minutesSeekBar = (CircularSeekBar) findViewById(R.id.minutesCircularSeekBar);
