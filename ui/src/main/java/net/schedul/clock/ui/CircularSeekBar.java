@@ -185,7 +185,7 @@ public class CircularSeekBar extends View {
         canvas.drawArc(viewBoundingRectangle, startAngle, startAngle + 360, false, grayColor);
         canvas.drawArc(viewBoundingRectangle, startAngle, angleDegree, false, circleColor);
 
-        float angleRadian = (float) ((angleDegree + startAngle) / 180.0 * Math.PI);
+        float angleRadian = (float) Math.toRadians(angleDegree + startAngle);
         float dx = (float) (Math.cos(angleRadian) * radius);
         float dy = (float) (Math.sin(angleRadian) * radius);
         float x = dx + cx;
@@ -249,7 +249,7 @@ public class CircularSeekBar extends View {
             return false; // Done! It's over! Finish!
         }
         double radianAngleAbs = Math.atan2(dy, dx);
-        double degreeAngleAbs = radianAngleAbs / Math.PI * 180.0;
+        double degreeAngleAbs = Math.toDegrees(radianAngleAbs);
         double degreeAngle = degreeAngleAbs - startAngle;
         while (degreeAngle < 0.0) {
             degreeAngle += 360.0;
