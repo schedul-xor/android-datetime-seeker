@@ -1,5 +1,13 @@
 apply plugin: 'com.android.library'
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -25,8 +33,20 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
-    compile project(':vendor:clock-java')
     compile fileTree(include: ['*.jar'], dir: 'libs')
+}
+
+apply plugin: 'maven'
+
+// Automated Gradle project deployment to Sonatype OSSRH
+if (isReleaseVersion) {
+    afterEvaluate {
+        project.apply from: "${rootProject.projectDir}/ui/deploy.gradle"
+    }
 }

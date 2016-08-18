@@ -1,7 +1,13 @@
 apply plugin: 'com.android.application'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 
-configurations { providedCompile }
-
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.0"
@@ -20,16 +26,7 @@ android {
         }
     }
 }
-
 dependencies {
-    compile project(':ui')
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.jakewharton:butterknife:6.0.0'
-    compile fileTree(include: ['*.jar', '*.java'], dir: 'vendor')
-}
-
-sourceSets {
-    main.java.srcDirs = ['src']
-    main.resources.srcDirs = ['resources']
-    main.compileClasspath += configurations.providedCompile
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 }

@@ -1,3 +1,0 @@
-[submodule "vendor/clock-java"]
-	path = vendor/clock-java
-	url = git@github.com:schedul-xor/clock-java.git

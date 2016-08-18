@@ -1,0 +1,51 @@
+apply plugin: 'maven'
+
+if (project.hasProperty("android")) { // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+        exclude 'android-logger.properties'
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        exclude 'android-logger.properties'
+    }
+} else { // Java libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+configurations {
+    deployerJars
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    deployerJars 'net.trajano.wagon:wagon-git:2.0.1'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: bitbucketWriteUrl) {
+                authentication(userName: bitbucketUsername, password: bitbucketPassword)
+            }
+            pom.groupId = 'com.ogiqvo.android-datetime-seeker'
+            pom.artifactId = 'ui'
+            pom.version = version
+        }
+    }
+}
