@@ -163,6 +163,11 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         });
     }
 
+    @Override
+    public void onPowerUpdate(double v) {
+        
+    }
+
     private void updateClockText(int hours, int minutes, int seconds) {
         timeTextView.setText(String.format("%d:%02d:%02d", hours, minutes, seconds));
     }
@@ -172,7 +177,7 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
         tickTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                clock.handleTimeUpdatedEvent();
+                clock.handleClockUpdateEvent();
             }
         }, 0, 16);
     }

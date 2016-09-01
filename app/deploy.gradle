@@ -32,17 +32,11 @@ repositories {
     jcenter()
 }
 
-dependencies {
-    deployerJars 'net.trajano.wagon:wagon-git:2.0.1'
-}
-
 uploadArchives {
     repositories {
         mavenDeployer {
             configuration = configurations.deployerJars
-            repository(url: bitbucketWriteUrl) {
-                authentication(userName: bitbucketUsername, password: bitbucketPassword)
-            }
+            repository(url: "file:${System.getProperty('user.home')}/.m2/repository")
             pom.groupId = 'com.ogiqvo.android-datetime-seeker'
             pom.artifactId = 'app'
             pom.version = version

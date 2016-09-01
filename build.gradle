@@ -40,6 +40,7 @@ def versionName() { return version }
 subprojects {
     repositories {
         jcenter()
+        maven { url "file:${System.getProperty('user.home')}/.m2/repository" }
     }
 
     tasks.withType(JavaCompile) {
