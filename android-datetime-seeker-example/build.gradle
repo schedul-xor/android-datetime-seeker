@@ -5,11 +5,10 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.0.0'
-    compile 'com.ogiqvo:clock:master-SNAPSHOT'
-    compile 'joda-time:joda-time:2.9.4'
-    compile project(':android-datetime-seeker')
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':android-datetime-seeker')
+    implementation 'com.android.support:appcompat-v7:27.0.0'
+    implementation 'com.ogiqvo:clock:master-SNAPSHOT'
+    implementation 'joda-time:joda-time:2.9.4'
 }
 
 android {
