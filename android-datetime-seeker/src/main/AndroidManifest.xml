@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="net.schedul.clock.ui">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ogiqvo.android_datetime_seeker">
 
     <application android:allowBackup="true" android:label="@string/app_name">
 

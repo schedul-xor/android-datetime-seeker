@@ -1,4 +1,4 @@
-package test.net.schedul.clock.example;
+package test.com.ogiqvo.android_datetime_seeker.example;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

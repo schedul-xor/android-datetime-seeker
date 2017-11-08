@@ -3,7 +3,7 @@
  * @version 1
  * @date 26 January, 2013
  */
-package net.schedul.clock.ui;
+package com.ogiqvo.android_datetime_seeker;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -117,8 +117,6 @@ public class CircularSeekBar extends View {
     public CircularSeekBar(Context context) {
         super(context);
         mContext = context;
-
-
 
         init();
     }

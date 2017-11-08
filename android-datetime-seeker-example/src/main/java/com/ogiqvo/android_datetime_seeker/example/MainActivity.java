@@ -1,15 +1,15 @@
-package net.schedul.clock.example;
+package com.ogiqvo.android_datetime_seeker.example;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import net.schedul.clock.lib.Clock;
-import net.schedul.clock.ui.CircularSeekBar;
+import com.ogiqvo.android_datetime_seeker.CircularSeekBar;
+import com.ogiqvo.clock.Clock;
 
 import org.joda.time.DateTime;
 
@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends ActionBarActivity implements Clock.ClockUpdateReceivable,CircularSeekBar.BarHoldListener {
+public class MainActivity extends Activity implements Clock.ClockUpdateReceivable,CircularSeekBar.BarHoldListener {
     static final private String TAG = "MainActivity";
 
     Clock clock;
