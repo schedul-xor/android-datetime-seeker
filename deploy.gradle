@@ -1,0 +1,77 @@
+apply plugin: 'signing'
+
+if (project.hasProperty("android")) {
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+} else {
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: SONATYPE_USERNAME, password: SONATYPE_PASSWORD)
+            }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: SONATYPE_USERNAME, password: SONATYPE_PASSWORD)
+            }
+
+            pom.project {
+                packaging 'jar'
+
+                name 'android-datetime-seeker'
+                description 'Turntable shaped datetime editor for android.'
+                url 'https://github.com/schedul-xor/android-datetime-seeker'
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        distribution 'repo'
+                    }
+                }
+
+                scm {
+                    connection 'scm:git:https://github.com/schedul-xor/android-datetime-seeker'
+                    developerConnection 'scm:git:https://github.com/schedul-xor/android-datetime-seeker'
+                    url 'https://github.com/schedul-xor/android-datetime-seeker'
+                }
+
+                developers {
+                    developer {
+                        id 'schedul-xor'
+                        name 'Izumi Kawashima'
+                        email 'xor@ogiqvo.com'
+                    }
+                }
+            }
+        }
+    }
+}

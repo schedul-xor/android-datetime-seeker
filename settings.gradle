@@ -1,2 +1,3 @@
-include ':app'
-include ':ui'
+rootProject.name = 'android-datetime-seeker-parent'
+include ':android-datetime-seeker-example'
+include ':android-datetime-seeker'

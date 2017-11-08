@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:27.0.0'
+    compile 'com.ogiqvo:clock:master-SNAPSHOT'
+    compile 'joda-time:joda-time:2.9.4'
+    compile project(':android-datetime-seeker')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+}
+
+android {
+    compileSdkVersion androidCompileSdk()
+    buildToolsVersion "$androidBuildVersionTools"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    defaultConfig {
+        versionCode versionCode()
+        versionName versionName()
+        minSdkVersion androidMinSdk()
+        targetSdkVersion androidTargetSdk()
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/resources']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+        }
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    lintOptions { abortOnError false }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    buildTypes {
+        all {
+            minifyEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+task run(dependsOn: 'installDebug') {
+    doFirst {
+        println(">> adb run...")
+        String adb = System.getenv()['ANDROID_HOME'] + '/platform-tools/adb'
+        String cmd = "${adb} shell am start -n org.oscim.android.test/.Samples"
+        def proc = cmd.execute()
+        proc.in.eachLine { line -> println line }
+        proc.err.eachLine { line -> System.err.println('ERROR: ' + line) }
+        proc.waitFor()
+    }
+}

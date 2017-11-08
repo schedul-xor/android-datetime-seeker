@@ -165,7 +165,7 @@ public class MainActivity extends ActionBarActivity implements Clock.ClockUpdate
 
     @Override
     public void onPowerUpdate(double v) {
-        
+
     }
 
     private void updateClockText(int hours, int minutes, int seconds) {
