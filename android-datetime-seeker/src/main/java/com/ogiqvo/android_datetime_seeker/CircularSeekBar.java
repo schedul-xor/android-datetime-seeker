@@ -147,6 +147,8 @@ public class CircularSeekBar extends View {
         grayColor.setAntiAlias(true);
         grayColor.setStrokeWidth(5);
         grayColor.setStyle(Paint.Style.STROKE);
+
+        setWillNotDraw(false);
     }
 
     /*
@@ -167,6 +169,10 @@ public class CircularSeekBar extends View {
 
         int scalingSize = Math.min(minWidth, minHeight); // Choose the smaller between width and height to make a square
         radius = scalingSize / 2; // Radius of the outer circle
+
+        if(radius > 0){
+            setWillNotDraw(true);
+        }
 
         float cx = width / 2.0f; // Center X for circle
         float cy = height / 2.0f; // Center Y for circle
