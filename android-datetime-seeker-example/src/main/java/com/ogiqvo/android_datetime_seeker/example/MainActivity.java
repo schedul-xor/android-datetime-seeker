@@ -25,6 +25,7 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
     TextView timeTextView;
     Handler handler;
     CircularSeekBar secondsSeekBar, minutesSeekBar, hoursSeekBar;
+    private int virtualDay = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,16 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
         hoursSeekBar.addSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
             @Override
             public void onProgressChange(CircularSeekBar view, int newProgress, CircularSeekBar.OverflowType overflowType) {
+                switch (overflowType) {
+                    case UNDERFLOWED:
+                        virtualDay--;
+                        break;
+                    case OVERFLOWED:
+                        virtualDay++;
+                        break;
+                }
                 setSeekBarTimeClockText();
+                setSeekBarReversibility();
             }
         });
         minutesSeekBar.addSeekBarChangeListener(new CircularSeekBar.SeekChangeListener() {
@@ -71,6 +81,7 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
                         break;
                 }
                 setSeekBarTimeClockText();
+                setSeekBarReversibility();
             }
         });
 
@@ -86,6 +97,7 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
                         break;
                 }
                 setSeekBarTimeClockText();
+                setSeekBarReversibility();
             }
         });
 
@@ -121,6 +133,12 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
         updateClockText(hours, minutes, seconds);
     }
 
+    private void setSeekBarReversibility() {
+        hoursSeekBar.setReverseMode(virtualDay % 2 == 0);
+        minutesSeekBar.setReverseMode(hoursSeekBar.getProgress() % 2 == 0);
+        secondsSeekBar.setReverseMode(minutesSeekBar.getProgress() % 2 == 0);
+    }
+
     @Override
     public void onBarHold() {
         destroyTickTimer();
@@ -147,6 +165,8 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
         createTickTimer();
 
         clock.start();
+
+        setSeekBarReversibility();
     }
 
     @Override
@@ -161,6 +181,8 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
                 hoursSeekBar.setProgress(dt.getHourOfDay(), false);
             }
         });
+        
+        setSeekBarReversibility();
     }
 
     @Override

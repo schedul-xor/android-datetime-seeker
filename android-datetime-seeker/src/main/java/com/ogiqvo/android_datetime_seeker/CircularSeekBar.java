@@ -6,6 +6,7 @@
 package com.ogiqvo.android_datetime_seeker;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,6 +17,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -23,8 +25,6 @@ import java.util.HashSet;
  * The Class CircularSeekBar.
  */
 public class CircularSeekBar extends View {
-    static final private String TAG = "CircularSeekBar";
-
     /** The context */
     private Context mContext;
 
@@ -38,11 +38,7 @@ public class CircularSeekBar extends View {
     private Paint grayColor;
 
     /** The start angle (12 O'clock */
-    private int startAngle = 270;
-
-    /** The width of the progress ring */
-    private int barWidth = 5;
-    private int strongBarWidth =10;
+    static final private int START_ANGLE = 270;
 
     /** The maximum progress amount */
     private int maxProgress = Integer.MAX_VALUE;
@@ -72,6 +68,12 @@ public class CircularSeekBar extends View {
 
     /** The rectangle containing our circles and arcs. */
     private RectF viewBoundingRectangle = new RectF();
+
+    public void setReverseMode(boolean reverseMode) {
+        isReverseMode = reverseMode;
+    }
+
+    private boolean isReverseMode = true;
 
     /**
      * Instantiates a new circular seek bar.
@@ -125,20 +127,25 @@ public class CircularSeekBar extends View {
      * Inits the drawable.
      */
     private void init() {
-        progressMark = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.scrubber_control_normal_holo);
-        progressMarkPressed = BitmapFactory.decodeResource(mContext.getResources(),
-                R.drawable.scrubber_control_pressed_holo);
+        AssetManager assetManager = mContext.getAssets();
+
+        try {
+            progressMark = BitmapFactory.decodeStream(assetManager.open("scrubber_control_normal_holo.png"));
+            progressMarkPressed = BitmapFactory.decodeStream(assetManager.open("scrubber_control_pressed_holo.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         circleColor = new Paint();
         circleColor.setColor(Color.parseColor("#ff33b5e5")); // Set default
         circleColor.setAntiAlias(true);
-        circleColor.setStrokeWidth(strongBarWidth);
+        circleColor.setStrokeWidth(10);
         circleColor.setStyle(Paint.Style.STROKE);
 
         grayColor = new Paint();
         grayColor.setColor(Color.GRAY);// Set default background color to Gray
         grayColor.setAntiAlias(true);
-        grayColor.setStrokeWidth(barWidth);
+        grayColor.setStrokeWidth(5);
         grayColor.setStyle(Paint.Style.STROKE);
     }
 
@@ -180,10 +187,14 @@ public class CircularSeekBar extends View {
         float cy = height / 2.0f; // Center Y for circle
 
         float angleDegree = (float) ((double) progress / (double) maxProgress * 360.0f);
-        canvas.drawArc(viewBoundingRectangle, startAngle, startAngle + 360, false, grayColor);
-        canvas.drawArc(viewBoundingRectangle, startAngle, angleDegree, false, circleColor);
+        canvas.drawArc(viewBoundingRectangle, START_ANGLE, START_ANGLE + 360, false, grayColor);
+        if(isReverseMode) {
+            canvas.drawArc(viewBoundingRectangle, angleDegree-90, START_ANGLE-angleDegree+90, false, circleColor);
+        }else{
+            canvas.drawArc(viewBoundingRectangle, START_ANGLE, angleDegree, false, circleColor);
+        }
 
-        float angleRadian = (float) Math.toRadians(angleDegree + startAngle);
+        float angleRadian = (float) Math.toRadians(angleDegree + START_ANGLE);
         float dx = (float) (Math.cos(angleRadian) * radius);
         float dy = (float) (Math.sin(angleRadian) * radius);
         float x = dx + cx;
@@ -248,7 +259,7 @@ public class CircularSeekBar extends View {
         }
         double radianAngleAbs = Math.atan2(dy, dx);
         double degreeAngleAbs = Math.toDegrees(radianAngleAbs);
-        double degreeAngle = degreeAngleAbs - startAngle;
+        double degreeAngle = degreeAngleAbs - START_ANGLE;
         while (degreeAngle < 0.0) {
             degreeAngle += 360.0;
         }
