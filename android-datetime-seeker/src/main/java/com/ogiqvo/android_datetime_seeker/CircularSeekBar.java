@@ -168,6 +168,11 @@ public class CircularSeekBar extends View {
         int scalingSize = Math.min(minWidth, minHeight); // Choose the smaller between width and height to make a square
         radius = scalingSize / 2; // Radius of the outer circle
 
+        if(radius == 0){
+            requestLayout();
+            invalidate();
+        }
+
         float cx = width / 2.0f; // Center X for circle
         float cy = height / 2.0f; // Center Y for circle
         float left = cx - radius; // Calculate left bound of our rect
