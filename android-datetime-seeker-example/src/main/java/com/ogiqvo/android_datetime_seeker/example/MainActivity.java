@@ -18,8 +18,6 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends Activity implements Clock.ClockUpdateReceivable,CircularSeekBar.BarHoldListener {
-    static final private String TAG = "MainActivity";
-
     Clock clock;
     Timer tickTimer;
     TextView timeTextView;

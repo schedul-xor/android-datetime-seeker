@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -26,8 +25,6 @@ import java.util.HashSet;
  * The Class CircularSeekBar.
  */
 public class CircularSeekBar extends View {
-    private static final String TAG = "CircularSeekBar";
-
     /** The context */
     private Context mContext;
 
