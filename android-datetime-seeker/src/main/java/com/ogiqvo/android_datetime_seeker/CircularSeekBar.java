@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -25,6 +26,8 @@ import java.util.HashSet;
  * The Class CircularSeekBar.
  */
 public class CircularSeekBar extends View {
+    private static final String TAG = "CircularSeekBar";
+
     /** The context */
     private Context mContext;
 
@@ -149,17 +152,23 @@ public class CircularSeekBar extends View {
         grayColor.setStyle(Paint.Style.STROKE);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onMeasure(int, int)
-     */
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    protected void onLayout (boolean changed,
+                   int left,
+                   int top,
+                   int right,
+                   int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
 
-        int width = getWidth(); // Get View Width
-        int height = getHeight();// Get View Height
+        int width = right-left; // Get View Width
+        int height = bottom-top;// Get View Height
+
+        if(width <= 0 || height <= 0){
+            requestLayout();
+            invalidate();
+            return;
+        }
+
         int maxMarkWidth = Math.max(progressMark.getWidth(), progressMarkPressed.getWidth());
         int maxMarkHeight = Math.max(progressMark.getHeight(), progressMarkPressed.getHeight());
         int minWidth = width-maxMarkWidth;
@@ -168,18 +177,13 @@ public class CircularSeekBar extends View {
         int scalingSize = Math.min(minWidth, minHeight); // Choose the smaller between width and height to make a square
         radius = scalingSize / 2; // Radius of the outer circle
 
-        if(radius == 0){
-            requestLayout();
-            invalidate();
-        }
-
         float cx = width / 2.0f; // Center X for circle
         float cy = height / 2.0f; // Center Y for circle
-        float left = cx - radius; // Calculate left bound of our rect
-        float right = cx + radius;// Calculate right bound of our rect
-        float top = cy - radius;// Calculate top bound of our rect
-        float bottom = cy + radius;// Calculate bottom bound of our rect
-        viewBoundingRectangle.set(left, top, right, bottom); // assign size to rect
+        float bleft = cx - radius; // Calculate left bound of our rect
+        float bright = cx + radius;// Calculate right bound of our rect
+        float btop = cy - radius;// Calculate top bound of our rect
+        float bbottom = cy + radius;// Calculate bottom bound of our rect
+        viewBoundingRectangle.set(bleft, btop, bright, bbottom); // assign size to rect
     }
 
     @Override
