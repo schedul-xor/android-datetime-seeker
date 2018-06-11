@@ -1,3 +1,4 @@
+apply plugin: 'maven'
 apply plugin: 'signing'
 
 if (project.hasProperty("android")) {
@@ -32,17 +33,27 @@ signing {
     sign configurations.archives
 }
 
+configurations {
+    deployerJars
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies{
+    // https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-classworlds
+    deployerJars group: 'org.codehaus.plexus', name: 'plexus-classworlds', version: '2.4'
+    deployerJars group: 'org.apache.maven.wagon', name: 'wagon-ssh', version: '2.12'
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: SONATYPE_USERNAME, password: SONATYPE_PASSWORD)
+            configuration = configurations.deployerJars
+            repository(url: "scp://maven.ogiqvo.com/home/xor/maven-repositories/staging"){
+                authentication(userName: "xor", privateKey: "/home/xor/.ssh/id_rsa")
             }
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: SONATYPE_USERNAME, password: SONATYPE_PASSWORD)
-            }
+            pom.artifactId = 'android-datetime-seeker'
 
             pom.project {
                 packaging 'jar'
