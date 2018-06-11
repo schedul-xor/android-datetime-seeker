@@ -6,7 +6,7 @@ repositories {
 
 dependencies {
     api project(':android-datetime-seeker')
-    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.ogiqvo:clock:0.0.0'
     implementation 'joda-time:joda-time:2.9.4'
 }
