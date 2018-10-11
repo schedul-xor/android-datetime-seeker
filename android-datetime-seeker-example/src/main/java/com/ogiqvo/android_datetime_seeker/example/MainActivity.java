@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ogiqvo.android_datetime_seeker.CircularSeekBar;
@@ -38,7 +37,6 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
         secondsSeekBar = (CircularSeekBar) findViewById(R.id.secondsCircularSeekBar);
         minutesSeekBar = (CircularSeekBar) findViewById(R.id.minutesCircularSeekBar);
         hoursSeekBar = (CircularSeekBar) findViewById(R.id.hoursCircularSeekBar);
-        final RadioGroup ampRadioGroup = (RadioGroup) findViewById(R.id.ampRadioGroup);
         timeTextView = (TextView) findViewById(R.id.timeTextView);
 
         secondsSeekBar.addBarHoldListener(this);
@@ -96,30 +94,6 @@ public class MainActivity extends Activity implements Clock.ClockUpdateReceivabl
                 }
                 setSeekBarTimeClockText();
                 setSeekBarReversibility();
-            }
-        });
-
-        ampRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rewind10Button:
-                        clock.setTimePower(-60);
-                        break;
-                    case R.id.rewind1Button:
-                        clock.setTimePower(-1);
-                        break;
-                    case R.id.pauseButton:
-                        clock.setTimePower(0);
-                        break;
-                    case R.id.play1Button:
-                        clock.setTimePower(1);
-                        break;
-                    case R.id.play10Button:
-                        clock.setTimePower(60);
-                        break;
-                }
-                clock.start();
             }
         });
     }

@@ -42,49 +42,4 @@
             android:layout_centerVertical="true"
             />
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/InnerRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
-        <RadioGroup
-            android:id="@+id/ampRadioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <RadioButton
-                android:id="@+id/rewind10Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="&lt;&lt;"
-                />
-            <RadioButton
-                android:id="@+id/rewind1Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="&lt;"
-                />
-            <RadioButton
-                android:id="@+id/pauseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="&gt;"
-                />
-            <RadioButton
-                android:id="@+id/play1Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="&gt;&gt;"
-                android:checked="true"
-                />
-            <RadioButton
-                android:id="@+id/play10Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                />
-            </RadioGroup>
-    </RelativeLayout>
 </RelativeLayout>
