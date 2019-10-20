@@ -26,7 +26,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives javadocJar
     archives sourcesJar
-}
+}app
 
 signing {
     required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }

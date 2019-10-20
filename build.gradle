@@ -4,14 +4,14 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
 allprojects {
     group = 'com.ogiqvo'
-    version = '0.0.0'
+    version = '0.0.1'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
     ext.androidBuildVersionTools = "27.0.0"
@@ -26,12 +26,12 @@ allprojects {
     }
 }
 
-static def androidCompileSdk() { return 27 }
+static def androidCompileSdk() { return 29 }
 
 // Minimum API Level by Support Library
-static def androidMinSdk() { return 14 }
+static def androidMinSdk() { return 8 }
 
-static def androidTargetSdk() { return 22 }
+static def androidTargetSdk() { return 29 }
 
 static def versionCode() { return 1 }
 
